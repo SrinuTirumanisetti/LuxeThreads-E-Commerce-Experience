@@ -16,75 +16,41 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import com.estore.api.estoreapi.model.Product;
 import com.estore.api.estoreapi.model.ShoppingCartItem;
-import com.estore.api.estoreapi.persistence.ShoppingCartDAO;
-
-/**
- * Handles the REST API requests for the ShoppingCart resource
- * <p>
- * {@literal @}RestController Spring annotation identifies this class as a REST API
- * method handler to the Spring framework
- * 
- * @author Md Tanvirul Alam
- */
-
+import com.estore.api.estoreapi.service.ShoppingCartService;
 
 @RestController
 @RequestMapping("shoppingcart")
 public class ShoppingCartController {
     private static final Logger LOG = Logger.getLogger(ShoppingCartController.class.getName());
-    private ShoppingCartDAO shoppingCartDAO;
+    private ShoppingCartService shoppingCartService;
 
-
-    /**
-     * Creates a REST API controller to reponds to requests
-     */
-    public ShoppingCartController(ShoppingCartDAO shoppingCartDAO) {
-        this.shoppingCartDAO = shoppingCartDAO;
+    public ShoppingCartController(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
     }
 
-
-    /**
-     * Responds to the GET request for all {@linkplain Product products}
-     * 
-     * @return ResponseEntity with array of {@link Product product} objects (may be empty) and
-     * HTTP status of OK<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
     @GetMapping("/{id}")
     public ResponseEntity<ShoppingCartItem[]> getShoppingCartItems(@PathVariable int id) {
         LOG.info("GET /shoppingcart/" + id);
         try {
-            return new ResponseEntity<ShoppingCartItem[]>(shoppingCartDAO.getItemsInShoppingCart(id),HttpStatus.OK);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<ShoppingCartItem[]>(shoppingCartService.getItemsInShoppingCart(id),
+                    HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
-    /**
-     * Adds a {@linkplain ShoppingCartItem item}
-     * 
-     * @param product The ShoppingCartItem item to add
-     * 
-     * @return ResponseEntity HTTP status of OK if added<br>
-     * ResponseEntity with HTTP status of NOT_FOUND if not added<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
     @PostMapping("")
     public ResponseEntity<ShoppingCartItem> addItemToShoppingCart(@RequestBody ShoppingCartItem item) {
         LOG.info("POST /shoppingcart/" + item);
 
         try {
-            shoppingCartDAO.addItemtoShoppingCart(item);
+            shoppingCartService.addItemtoShoppingCart(item);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -94,36 +60,26 @@ public class ShoppingCartController {
         LOG.info("PUT /shoppingcart/" + item);
 
         try {
-            shoppingCartDAO.updateCart(item);
+            shoppingCartService.updateCart(item);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    /**
-     * Deletes a {@linkplain ShoppingCartItem item} with the given id
-     * 
-     * @param id The id of the {@link ShoppingCartItem item} to deleted
-     * 
-     * @return ResponseEntity HTTP status of OK if deleted<br>
-     * ResponseEntity with HTTP status of NOT_FOUND if not found<br>
-     * ResponseEntity with HTTP status of INTERNAL_SERVER_ERROR otherwise
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ShoppingCartItem> removeItemFromShoppingCart(@PathVariable int id) {
         LOG.info("DELETE /shoppingcart/" + id);
 
         try {
-            boolean removed = shoppingCartDAO.removeItemFromShoppingCart(id);
+            boolean removed = shoppingCartService.removeItemFromShoppingCart(id);
             if (removed == true)
                 return new ResponseEntity<>(HttpStatus.OK);
             else
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -133,10 +89,10 @@ public class ShoppingCartController {
         LOG.info("CLEAR /shoppingcart/" + userID);
 
         try {
-            shoppingCartDAO.clearShoppingCart(userID);
-            return new ResponseEntity<>(HttpStatus.OK);}
-        catch(IOException e) {
-            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            shoppingCartService.clearShoppingCart(userID);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

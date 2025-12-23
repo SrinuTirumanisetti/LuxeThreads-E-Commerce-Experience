@@ -1,83 +1,90 @@
-# E-Store:  Customized T-shirts and phone cases
-This will be an e-store specializing in products that help its buyers express their personalities through its products. As such, the store will offer t-shirts and phone cases that, beyond their practical uses, can serve as a canvas for users to express their tastes and ideas. (edited) 
+# � E-Store Express - Personality-Driven Apparel
 
-## Modify this document to expand any and all sections that are applicable for a better understanding from your users/testers/collaborators (remove this comment and other instructions areas for your FINAL release)
+This is an e-store specializing in products that help its buyers express their personalities. The store offers t-shirts that, beyond their practical uses, serve as a canvas for users to express their tastes and ideas.
 
-OUr online E-store system is built with Java SpringBoot 8=>11 and Angular.
+---
 
+## 🛠️ Technology Stack
+- **Backend**: Java Spring Boot (8-11)
+- **Frontend**: React
+- **Build Tool**: Maven
 
-## Prerequisites
+## 📋 Prerequisites
+- **Java**: 8 => 11 (Make sure to have correct `JAVA_HOME` setup in your environment)
+- **Maven**: Installed and configured
+- **React**: Node.js and npm/yarn for frontend development
 
-- Java 8=>11 (Make sure to have correct JAVA_HOME setup in your environment)
-- Maven
-- Angular
+---
 
+## 🚀 How to Run It
 
-## How to run it
+1. **Clone the repository** and navigate to the root directory.
 
-1. Clone the repository and go to the root directory.
-2. Change the directory to estore-api folder and Execute `mvn compile exec:java`
-3. Open in your browser `http://localhost:8080/`
-4. Make sure your port 8080 is not in use. If its in use, find the PID of the process and kill it first. 
+### ⚙️ Backend (API)
+1. **Navigate** to the `estore-api` folder.
+2. **Execute**: `mvn compile exec:java`
+3. **API access**: [http://localhost:8080/](http://localhost:8080/)
 
-## CURL commands for test 
+> [!IMPORTANT]
+> Make sure your port `8080` is not in use. If it is, find the PID of the process and kill it first.
 
-1. Create a new product in the inventory: curl -X POST -H 'Content-Type:application/json' 'http://localhost:8080/products' -d '{"name": "Momo", "price":20, "quantity":20}'       
-2. Delete a product in the inventory: curl -X DELETE 'http://localhost:8080/products/3'
-3. Retrieve a specific product: curl -X GET 'http://localhost:8080/products/1'
-4. Search for a product by partial name: curl -X GET 'http://localhost:8080/products/?name=glo' 
-5. Update the price or quantity of a product in the inventory: curl -X PUT -H 'Content-Type:application/json' 'http://localhost:8080/products' -d '{"id": 4,"name":"Mo:Mo", "price":10, "quantity":200}' 
-6. List all the products (name, price, quantity, etc.) in the inventory: curl -X GET 'http://localhost:8080/products'
+### 📱 Frontend (UI)
+1. **Navigate** to the `estore-ui` folder.
+2. **Install dependencies**: `npm install` (required only for the first time)
+3. **Execute**: `npm run dev`
+4. **App access**: Usually [http://localhost:5173](http://localhost:5173) (check terminal for actual URL)
 
-Note: In Mac, you might to have to replace localhost with address 0.0.0.0!
+---
 
-## Known bugs and disclaimers
-(It may be the case that your implementation is not perfect.)
+## 🧪 CURL Commands for Testing
 
-Document any known bug or nuisance.
-If any shortcomings, make clear what these are and where they are located.
+You can use the following commands to interact with the API:
 
-## How to test it
+- **List all products**:
+  ```bash
+  curl -X GET 'http://localhost:8080/products'
+  ```
+- **Retrieve a specific product**:
+  ```bash
+  curl -X GET 'http://localhost:8080/products/1'
+  ```
+- **Search for a product (partial name)**:
+  ```bash
+  curl -X GET 'http://localhost:8080/products/?name=glo'
+  ```
+- **Create a new product**:
+  ```bash
+  curl -X POST -H 'Content-Type:application/json' 'http://localhost:8080/products' -d '{"name": "Momo", "price":20, "quantity":20}'
+  ```
+- **Update a product (price or quantity)**:
+  ```bash
+  curl -X PUT -H 'Content-Type:application/json' 'http://localhost:8080/products' -d '{"id": 4,"name":"Mo:Mo", "price":10, "quantity":200}'
+  ```
+- **Delete a product**:
+  ```bash
+  curl -X DELETE 'http://localhost:8080/products/3'
+  ```
 
-The Maven build script provides hooks for run unit tests and generate code coverage
-reports in HTML.
+> [!NOTE]
+> On Mac, you might need to replace `localhost` with the address `0.0.0.0`!
 
-To run tests on all tiers together do this:
+---
 
-1. Execute `mvn clean test jacoco:report`
-2. Open in your browser the file at `PROJECT_API_HOME/target/site/jacoco/index.html`
+## 🧪 How to Test It
 
-To run tests on a single tier do this:
+The Maven build script provides hooks for running unit tests and generating code coverage reports in HTML.
 
-1. Execute `mvn clean test-compile surefire:test@tier jacoco:report@tier` where `tier` is one of `controller`, `model`, `persistence`
-2. Open in your browser the file at `PROJECT_API_HOME/target/site/jacoco/{controller, model, persistence}/index.html`
+### Run tests on all tiers together:
+1. Execute: `mvn clean test jacoco:report`
+2. Open in your browser: `PROJECT_API_HOME/target/site/jacoco/index.html`
 
-To run tests on all the tiers in isolation do this:
+### Run tests on a single tier (controller or model):
+1. Execute: `mvn clean test-compile surefire:test@tier jacoco:report@tier`  
+   *(Replace `tier` with one of: `controller`, `model`)*
+2. Open in your browser: `PROJECT_API_HOME/target/site/jacoco/{controller, model}/index.html`
 
-1. Execute `mvn exec:exec@tests-and-coverage`
-2. To view the Controller tier tests open in your browser the file at `PROJECT_API_HOME/target/site/jacoco/model/index.html`
-3. To view the Model tier tests open in your browser the file at `PROJECT_API_HOME/target/site/jacoco/model/index.html`
-4. To view the Persistence tier tests open in your browser the file at `PROJECT_API_HOME/target/site/jacoco/model/index.html`
+### Run tests in isolation:
+1. Execute: `mvn exec:exec@tests-and-coverage`
+2. **Controller tier**: `PROJECT_API_HOME/target/site/jacoco/controller/index.html`
+3. **Model tier**: `PROJECT_API_HOME/target/site/jacoco/model/index.html`
 
-*(Consider using `mvn clean verify` to attest you have reached the target threshold for coverage)
-  
-  
-## How to generate the Design documentation PDF
-
-1. Access the `PROJECT_DOCS_HOME/` directory
-2. Execute `mvn exec:exec@docs`
-3. The generated PDF will be in `PROJECT_DOCS_HOME/` directory
-
-
-## How to setup/run/test program 
-1. Tester, first obtain the Acceptance Test plan
-2. IP address of target machine running the app
-3. Execute ________
-4. ...
-5. ...
-
-## License
-
-MIT License
-
-See LICENSE for details.

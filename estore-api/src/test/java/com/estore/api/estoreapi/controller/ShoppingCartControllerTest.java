@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.estore.api.estoreapi.persistence.ShoppingCartDAO;
+import com.estore.api.estoreapi.service.ShoppingCartService;
 import com.estore.api.estoreapi.model.ShoppingCartItem;
 
 @Tag("Controller-tier")
 public class ShoppingCartControllerTest {
   private ShoppingCartController shoppingCartController;
-  private ShoppingCartDAO mockShoppingCartDao;
+  private ShoppingCartService mockShoppingCartService;
 
   @BeforeEach
   public void setupShoppingCartController() {
-    mockShoppingCartDao = mock(ShoppingCartDAO.class);
-    shoppingCartController = new ShoppingCartController(mockShoppingCartDao);
+    mockShoppingCartService = mock(ShoppingCartService.class);
+    shoppingCartController = new ShoppingCartController(mockShoppingCartService);
   }
 
   @Test
@@ -32,8 +32,8 @@ public class ShoppingCartControllerTest {
     ShoppingCartItem[] items = new ShoppingCartItem[2];
     items[0] = new ShoppingCartItem(1, 4, "red", "S", "img1", 3, 1);
     items[1] = new ShoppingCartItem(2, 8, "blue", "M", "img2", 5, 10);
-    
-    when(mockShoppingCartDao.getItemsInShoppingCart(items[0].getUserId())).thenReturn(items);
+
+    when(mockShoppingCartService.getItemsInShoppingCart(items[0].getUserId())).thenReturn(items);
 
     ResponseEntity<ShoppingCartItem[]> response = shoppingCartController.getShoppingCartItems(items[0].getUserId());
 
@@ -44,7 +44,7 @@ public class ShoppingCartControllerTest {
   @Test
   public void testGetItemsInShoppingCartException() throws Exception {
     int id = 99;
-    doThrow(new IOException()).when(mockShoppingCartDao).getItemsInShoppingCart(id);
+    doThrow(new IOException()).when(mockShoppingCartService).getItemsInShoppingCart(id);
 
     ResponseEntity<ShoppingCartItem[]> response = shoppingCartController.getShoppingCartItems(id);
 
@@ -54,8 +54,8 @@ public class ShoppingCartControllerTest {
   @Test
   public void testAddItemToShoppingCart() throws IOException {
     ShoppingCartItem item = new ShoppingCartItem(11, 4, "red", "S", "img1", 3, 1);
-    
-    mockShoppingCartDao.addItemtoShoppingCart(item);
+
+    mockShoppingCartService.addItemtoShoppingCart(item);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.addItemToShoppingCart(item);
 
@@ -65,8 +65,8 @@ public class ShoppingCartControllerTest {
   @Test
   public void testAddItemToShoppingCartException() throws IOException {
     ShoppingCartItem item = new ShoppingCartItem(11, 4, "red", "S", "img1", 3, 1);
-    
-    doThrow(new IOException()).when(mockShoppingCartDao).addItemtoShoppingCart(item);
+
+    doThrow(new IOException()).when(mockShoppingCartService).addItemtoShoppingCart(item);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.addItemToShoppingCart(item);
 
@@ -76,8 +76,8 @@ public class ShoppingCartControllerTest {
   @Test
   public void testRemoveItemFromShoppingCart() throws IOException {
     int id = 99;
-    
-    when(mockShoppingCartDao.removeItemFromShoppingCart(id)).thenReturn(true);
+
+    when(mockShoppingCartService.removeItemFromShoppingCart(id)).thenReturn(true);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.removeItemFromShoppingCart(id);
 
@@ -87,8 +87,8 @@ public class ShoppingCartControllerTest {
   @Test
   public void testRemoveItemFromShoppingCartNotFound() throws IOException {
     int id = 99;
-    
-    when(mockShoppingCartDao.removeItemFromShoppingCart(id)).thenReturn(false);
+
+    when(mockShoppingCartService.removeItemFromShoppingCart(id)).thenReturn(false);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.removeItemFromShoppingCart(id);
 
@@ -98,8 +98,8 @@ public class ShoppingCartControllerTest {
   @Test
   public void testRemoveItemFromShoppingCartException() throws IOException {
     int id = 99;
-    
-    doThrow(new IOException()).when(mockShoppingCartDao).removeItemFromShoppingCart(id);
+
+    doThrow(new IOException()).when(mockShoppingCartService).removeItemFromShoppingCart(id);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.removeItemFromShoppingCart(id);
 
@@ -109,19 +109,19 @@ public class ShoppingCartControllerTest {
   @Test
   public void testClearShoppingCart() throws IOException {
     int id = 99;
-    
-    mockShoppingCartDao.clearShoppingCart(id);
+
+    mockShoppingCartService.clearShoppingCart(id);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.clearShoppingCart(id);
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
   }
-  
+
   @Test
   public void testClearShoppingCartException() throws IOException {
     int id = 99;
-    
-    doThrow(new IOException()).when(mockShoppingCartDao).clearShoppingCart(id);
+
+    doThrow(new IOException()).when(mockShoppingCartService).clearShoppingCart(id);
 
     ResponseEntity<ShoppingCartItem> response = shoppingCartController.clearShoppingCart(id);
 

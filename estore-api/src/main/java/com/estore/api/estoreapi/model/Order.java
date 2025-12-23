@@ -1,26 +1,49 @@
 package com.estore.api.estoreapi.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.ArrayList;
 
-/**
- * Represents an Order Item
- * 
- * @author Md Tanvirul Alam
- */
+@Entity
+@Table(name = "estore_orders")
 public class Order {
-    // unique ID of the Order
-    @JsonProperty("orderID") private int orderID;
-    // ID of the Order
-    @JsonProperty("userID") private int userID;
-    // how many times this item was added to the cart
-    @JsonProperty("items") private ShoppingCartItem[] items;
-    // date when the Order was placed
-    @JsonProperty("orderDate") private String orderDate;
-    // shipping adddress for the Order
-    @JsonProperty("address") private String address;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @javax.persistence.Column(name = "order_id")
+    @JsonProperty("orderID")
+    private int orderID;
 
+    @javax.persistence.Column(name = "user_id")
+    @JsonProperty("userID")
+    private int userID;
 
-    public Order(@JsonProperty("orderID") int orderID, @JsonProperty("userID") int userID, @JsonProperty("items") ShoppingCartItem[] items, @JsonProperty("orderDate") String orderDate, @JsonProperty("address") String address) {    
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    @JsonProperty("items")
+    private List<ShoppingCartItem> items;
+
+    @javax.persistence.Column(name = "order_date")
+    @JsonProperty("orderDate")
+    private String orderDate;
+
+    @javax.persistence.Column(name = "address")
+    @JsonProperty("address")
+    private String address;
+
+    public Order() {
+    }
+
+    public Order(@JsonProperty("orderID") int orderID, @JsonProperty("userID") int userID,
+            @JsonProperty("items") List<ShoppingCartItem> items, @JsonProperty("orderDate") String orderDate,
+            @JsonProperty("address") String address) {
         this.orderID = orderID;
         this.userID = userID;
         this.items = items;
@@ -31,7 +54,7 @@ public class Order {
     public int getOrderID() {
         return this.orderID;
     }
-    
+
     public int getUserId() {
         return this.userID;
     }
@@ -40,11 +63,11 @@ public class Order {
         this.userID = userID;
     }
 
-    public ShoppingCartItem[] getItems() {
+    public List<ShoppingCartItem> getItems() {
         return this.items;
     }
 
-    public void setItems(ShoppingCartItem[] items) {
+    public void setItems(List<ShoppingCartItem> items) {
         this.items = items;
     }
 
