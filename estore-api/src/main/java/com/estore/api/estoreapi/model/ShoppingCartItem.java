@@ -15,7 +15,7 @@ public class ShoppingCartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shopping_cart_id")
     @JsonProperty("shoppingCartID")
-    private int shoppingCartId;
+    private int shoppingCartID;
 
     @Column(name = "product_id")
     @JsonProperty("productID")
@@ -36,18 +36,14 @@ public class ShoppingCartItem {
     @JsonProperty("shoppingCartQuantity")
     private int shoppingCartQuantity;
 
-    // Optional: link to Order if needed for JPA bidirectional, but strict mapping
-    // not required if unidi
-    // private Integer order_id;
-
     public ShoppingCartItem() {
     }
 
-    public ShoppingCartItem(@JsonProperty("shoppingCartID") int shoppingCartId,
+    public ShoppingCartItem(@JsonProperty("shoppingCartID") int shoppingCartID,
             @JsonProperty("productID") int productID, @JsonProperty("color") String color,
             @JsonProperty("size") String size, @JsonProperty("image") String image, @JsonProperty("userID") int userID,
             @JsonProperty("shoppingCartQuantity") int shoppingCartQuantity) {
-        this.shoppingCartId = shoppingCartId;
+        this.shoppingCartID = shoppingCartID;
         this.productID = productID;
         this.color = color;
         this.size = size;
@@ -56,7 +52,7 @@ public class ShoppingCartItem {
         this.shoppingCartQuantity = shoppingCartQuantity;
     }
 
-    public int getProductId() {
+    public int getProductID() {
         return this.productID;
     }
 
@@ -88,28 +84,33 @@ public class ShoppingCartItem {
         this.image = image;
     }
 
-    public int getUserId() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserId(int userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 
-    public int getshoppingCartQuantity() {
+    public int getShoppingCartQuantity() {
         return this.shoppingCartQuantity;
     }
 
-    public void setshoppingCartQuantity(int shoppingCartQuantity) {
+    public void setShoppingCartQuantity(int shoppingCartQuantity) {
         this.shoppingCartQuantity = shoppingCartQuantity;
     }
 
-    public int getShoppingCartId() {
-        return this.shoppingCartId;
+    public int getShoppingCartID() {
+        return this.shoppingCartID;
     }
 
-    public void setShoppingCartId(int shoppingCartId) {
-        this.shoppingCartId = shoppingCartId;
+    public void setShoppingCartID(int shoppingCartID) {
+        this.shoppingCartID = shoppingCartID;
     }
 
+    @Override
+    public String toString() {
+        return "ShoppingCartItem [ID=" + shoppingCartID + ", product=" + productID + ", qty=" + shoppingCartQuantity
+                + "]";
+    }
 }

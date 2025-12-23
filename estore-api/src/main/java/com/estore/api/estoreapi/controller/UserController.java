@@ -41,6 +41,22 @@ public class UserController {
         }
     }
 
+    @GetMapping("/login/{name}")
+    public ResponseEntity<User> login(@PathVariable String name) {
+        LOG.info("GET /users/login/" + name);
+        try {
+            User user = userService.getUserByName(name);
+            if (user != null) {
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (IOException e) {
+            LOG.log(Level.SEVERE, e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         LOG.info("POST /users " + user);

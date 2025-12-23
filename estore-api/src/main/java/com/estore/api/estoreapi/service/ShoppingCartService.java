@@ -34,8 +34,11 @@ public class ShoppingCartService {
     }
 
     public void updateCart(ShoppingCartItem shoppingCartItem) throws IOException {
-        if (repository.existsById(shoppingCartItem.getShoppingCartId())) {
-            repository.save(shoppingCartItem);
+        Optional<ShoppingCartItem> existingItemOpt = repository.findById(shoppingCartItem.getShoppingCartID());
+        if (existingItemOpt.isPresent()) {
+            ShoppingCartItem existingItem = existingItemOpt.get();
+            existingItem.setShoppingCartQuantity(shoppingCartItem.getShoppingCartQuantity());
+            repository.save(existingItem);
         }
     }
 

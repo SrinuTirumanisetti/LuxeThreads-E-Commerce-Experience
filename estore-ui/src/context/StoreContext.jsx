@@ -27,11 +27,30 @@ export const StoreProvider = ({ children }) => {
         refreshCart();
     }, [refreshCart]);
 
-    const login = (name) => {
-        const id = UserService.getUserId(name);
-        const newUser = { id, name };
-        setUser(newUser);
-        localStorage.setItem('estore_user', JSON.stringify(newUser));
+    const login = async (name) => {
+        try {
+            const response = await UserService.login(name);
+            const newUser = response.data;
+            setUser(newUser);
+            localStorage.setItem('estore_user', JSON.stringify(newUser));
+            return newUser;
+        } catch (error) {
+            console.error('Login failed', error);
+            throw error;
+        }
+    };
+
+    const signup = async (name) => {
+        try {
+            const response = await UserService.register(name);
+            const newUser = response.data;
+            setUser(newUser);
+            localStorage.setItem('estore_user', JSON.stringify(newUser));
+            return newUser;
+        } catch (error) {
+            console.error('Signup failed', error);
+            throw error;
+        }
     };
 
     const logout = () => {
@@ -59,7 +78,7 @@ export const StoreProvider = ({ children }) => {
     };
 
     return (
-        <StoreContext.Provider value={{ user, login, logout, cart, refreshCart, addToCart }}>
+        <StoreContext.Provider value={{ user, login, signup, logout, cart, refreshCart, addToCart }}>
             {children}
         </StoreContext.Provider>
     );

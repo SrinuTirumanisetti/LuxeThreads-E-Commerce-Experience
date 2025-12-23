@@ -8,6 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.FetchType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Order {
     @JsonProperty("userID")
     private int userID;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     @JsonProperty("items")
     private List<ShoppingCartItem> items;
@@ -55,11 +56,11 @@ public class Order {
         return this.orderID;
     }
 
-    public int getUserId() {
+    public int getUserID() {
         return this.userID;
     }
 
-    public void setUserId(int userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
 

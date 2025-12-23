@@ -11,6 +11,7 @@ public class User {
     static final String STRING_FORMAT = "User [id=%d, name=%s]";
 
     @Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @JsonProperty("id")
     private int id;
     @JsonProperty("name")

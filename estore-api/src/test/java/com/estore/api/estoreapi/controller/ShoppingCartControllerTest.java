@@ -33,9 +33,9 @@ public class ShoppingCartControllerTest {
     items[0] = new ShoppingCartItem(1, 4, "red", "S", "img1", 3, 1);
     items[1] = new ShoppingCartItem(2, 8, "blue", "M", "img2", 5, 10);
 
-    when(mockShoppingCartService.getItemsInShoppingCart(items[0].getUserId())).thenReturn(items);
+    when(mockShoppingCartService.getItemsInShoppingCart(items[0].getUserID())).thenReturn(items);
 
-    ResponseEntity<ShoppingCartItem[]> response = shoppingCartController.getShoppingCartItems(items[0].getUserId());
+    ResponseEntity<ShoppingCartItem[]> response = shoppingCartController.getShoppingCartItems(items[0].getUserID());
 
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(items, response.getBody());

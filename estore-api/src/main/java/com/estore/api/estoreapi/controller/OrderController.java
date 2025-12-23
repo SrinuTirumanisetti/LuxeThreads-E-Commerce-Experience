@@ -21,7 +21,7 @@ import com.estore.api.estoreapi.service.OrderService;
 @RestController
 @RequestMapping("order")
 public class OrderController {
-    private static final Logger LOG = Logger.getLogger(ShoppingCartController.class.getName());
+    private static final Logger LOG = Logger.getLogger(OrderController.class.getName());
     private OrderService orderService;
 
     public OrderController(OrderService orderService) {

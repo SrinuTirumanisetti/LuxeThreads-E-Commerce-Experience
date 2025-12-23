@@ -32,10 +32,6 @@ export const OrderService = {
 };
 
 export const UserService = {
-    getUserId: (name) => {
-        return name.split('').reduce((a, b) => {
-            a = (a << 5) - a + b.charCodeAt(0);
-            return a & a;
-        }, 0);
-    },
+    login: (name) => api.get(`/users/login/${name}`),
+    register: (name) => api.post('/users', { name }),
 };

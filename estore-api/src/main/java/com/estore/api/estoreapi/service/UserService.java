@@ -26,6 +26,10 @@ public class UserService {
         return user.orElse(null);
     }
 
+    public User getUserByName(String name) throws IOException {
+        return repository.findByName(name);
+    }
+
     public User createUser(User user) throws IOException {
         return repository.save(user);
     }

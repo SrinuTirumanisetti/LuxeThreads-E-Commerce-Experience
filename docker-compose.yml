@@ -1,0 +1,36 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: estore_db
+      MYSQL_ROOT_PASSWORD: Srinu582004
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build: ./estore-api
+    restart: always
+    environment:
+      - DB_URL=jdbc:mysql://db:3306/estore_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=Srinu582004
+      - SPRING_SQL_INIT_MODE=always
+      - SPRING_SQL_INIT_CONTINUE_ON_ERROR=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./estore-ui
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:

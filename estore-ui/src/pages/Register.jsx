@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useStore } from '../context/StoreContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, LogIn } from 'lucide-react';
+import { UserPlus, User } from 'lucide-react';
 
-const Login = () => {
+const Register = () => {
     const [name, setName] = useState('');
-    const { login } = useStore();
+    const { signup } = useStore();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -13,14 +13,10 @@ const Login = () => {
         const trimmedName = name.trim();
         if (trimmedName) {
             try {
-                await login(trimmedName);
+                await signup(trimmedName);
                 navigate('/');
             } catch (error) {
-                if (error.response && error.response.status === 404) {
-                    alert(`User "${trimmedName}" not found. Please register if you don't have an account.`);
-                } else {
-                    alert('Login failed. Please try again later.');
-                }
+                alert('Registration failed. The name might already be taken or there was a server error.');
             }
         }
     };
@@ -43,7 +39,8 @@ const Login = () => {
                 <div style={{
                     width: '60px',
                     height: '60px',
-                    background: 'var(--primary)',
+                    background: 'var(--secondary)',
+                    color: 'white',
                     borderRadius: '50%',
                     display: 'flex',
                     justifyContent: 'center',
@@ -52,9 +49,9 @@ const Login = () => {
                 }}>
                     <User size={30} />
                 </div>
-                <h2 style={{ marginBottom: '0.5rem' }}>Welcome Back</h2>
+                <h2 style={{ marginBottom: '0.5rem' }}>Create Account</h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
-                    Enter your name to sign in to LuxeThreads
+                    Join LuxeThreads and start shopping!
                 </p>
 
                 <form onSubmit={handleSubmit}>
@@ -64,7 +61,7 @@ const Login = () => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="e.g. Dipkamal"
+                            placeholder="Enter your name"
                             required
                             style={{
                                 width: '100%',
@@ -75,7 +72,7 @@ const Login = () => {
                                 outline: 'none',
                                 transition: 'border-color 0.2s'
                             }}
-                            onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+                            onFocus={(e) => e.target.style.borderColor = 'var(--secondary)'}
                             onBlur={(e) => e.target.style.borderColor = '#ddd'}
                         />
                     </div>
@@ -84,7 +81,8 @@ const Login = () => {
                         style={{
                             width: '100%',
                             padding: '1rem',
-                            background: 'var(--primary)',
+                            background: 'var(--secondary)',
+                            color: 'white',
                             borderRadius: 'var(--br)',
                             fontWeight: 'bold',
                             fontSize: '1rem',
@@ -96,17 +94,17 @@ const Login = () => {
                             cursor: 'pointer'
                         }}
                     >
-                        <LogIn size={20} />
-                        Sign In
+                        <UserPlus size={20} />
+                        Register Now
                     </button>
                 </form>
 
                 <div style={{ marginTop: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Don't have an account? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Sign Up</Link>
+                    Already have an account? <Link to="/login" style={{ color: 'var(--secondary)', fontWeight: 'bold' }}>Sign In</Link>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default Register;

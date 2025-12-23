@@ -8,6 +8,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useStore();
@@ -23,6 +24,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route
             path="/cart"

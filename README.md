@@ -13,12 +13,22 @@ This is an e-store specializing in products that help its buyers express their p
 - **Java**: 8 => 11 (Make sure to have correct `JAVA_HOME` setup in your environment)
 - **Maven**: Installed and configured
 - **React**: Node.js and npm/yarn for frontend development
+- **MySQL**: (Optional for production) Installed and running locally or on a server
 
 ---
 
 ## 🚀 How to Run It
 
 1. **Clone the repository** and navigate to the root directory.
+
+### 🗄️ Database Setup (MySQL)
+1. **Ensure MySQL is running** on your system.
+2. **Environment Variables**: For security (especially during deployment), set the following environment variables. The application will use these instead of the defaults in `application.properties`:
+   - `DB_URL`: Your MySQL connection string.
+   - `DB_USERNAME`: Your MySQL username (e.g., `root`).
+   - `DB_PASSWORD`: Your MySQL password.
+3. **Local Default**: If variables aren't set, it defaults to `localhost` with username `root` and password `password`. Update the password in `application.properties` if your local password is different.
+   - **Note on Initialization**: On the very first run with a new database, set `spring.sql.init.mode=always` to create tables and seed data. For subsequent runs, set it to `never` to avoid "Duplicate Entry" errors.
 
 ### ⚙️ Backend (API)
 1. **Navigate** to the `estore-api` folder.
@@ -67,6 +77,43 @@ You can use the following commands to interact with the API:
 
 > [!NOTE]
 > On Mac, you might need to replace `localhost` with the address `0.0.0.0`!
+
+---
+
+## 🚀 Deployment
+
+For production deployment, follow these general steps:
+
+### 🏗️ Backend (API)
+Build the executable JAR:
+```bash
+cd estore-api
+mvn clean package -DskipTests
+```
+Run with environment variables: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`.
+
+### 🌐 Frontend (UI)
+Build production static assets:
+```bash
+cd estore-ui
+npm run build
+```
+Host the resulting `dist` folder on any static web host (Vercel, Netlify, etc.).
+
+### 🐳 Docker (One-Command Deployment)
+Build and start the entire stack (Database, API, and UI) with:
+```bash
+docker-compose up --build
+```
+The website will be available at `http://localhost`.
+
+---
+
+## 🌐 Hosting (Live Link)
+
+To get a live link for your project, we recommend using **Railway** or **Render**. 
+
+Check out the full [Hosting Guide](./hosting_guide.md) for step-by-step instructions.
 
 ---
 
