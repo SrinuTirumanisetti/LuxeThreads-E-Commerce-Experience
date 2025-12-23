@@ -6,7 +6,6 @@ LuxeThreads is a full-stack e-commerce platform designed for buyers who express 
 
 ## ✨ Core Features
 
--   **🔐 Secure Authentication**: Distinct Login and Registration flows with database verification.
 -   **🛒 Advanced Shopping Cart**: Persistent cart management with real-time quantity updates and partial-update optimization for data integrity.
 -   **📦 Order Management**: Full checkout process with automated order history tracking and persistent storage.
 -   **🔍 Smart Product Search**: Real-time filtering and search capabilities for a seamless browsing experience.
@@ -37,17 +36,30 @@ docker-compose up --build
 
 ---
 
-## 🛠️ Manual setup
+## 💻 Localhost Development (Manual)
 
-Check our detailed guides for manual configuration and deep dives:
+If you prefer to run the components individually without Docker:
 
--   [📄 Deployment Guide](./deployment_guide.md) - Manual build and environment variable setup.
--   [🌐 Hosting Guide](./hosting_guide.md) - Instructions for Railway, Render, and Vercel.
+### 1. ⚙️ Backend (API)
+1.  Navigate to `estore-api`.
+2.  Run the application using Maven:
+```bash
+mvn compile exec:java
+```
+-   **API access**: [http://localhost:8080/](http://localhost:8080/)
+
+### 2. 📱 Frontend (UI)
+1.  Navigate to `estore-ui`.
+2.  Install dependencies and start the dev server:
+```bash
+npm install
+npm run dev
+```
+-   **App access**: [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## 🧪 Testing & Quality
-
 We maintain high code quality through rigorous testing of both model and controller tiers.
 
 ### Run All Tests:
