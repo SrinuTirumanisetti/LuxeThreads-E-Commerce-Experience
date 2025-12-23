@@ -20,7 +20,7 @@ LuxeThreads is a full-stack e-commerce platform designed for buyers who express 
 | **Frontend** | React, Vite, Context API, Lucide Icons, Vanilla CSS (Premium Design) |
 | **Backend** | Java Spring Boot, Spring Data JPA, Hibernate, Maven |
 | **Database** | MySQL (Production), H2 (Development & Testing) |
-| **DevOps** | Docker, Docker Compose, Nginx (Frontend Hosting) |
+| **DevOps** | Docker, Docker Compose, |
 
 ---
 
@@ -57,11 +57,3 @@ mvn clean test jacoco:report
 View coverage at: `estore-api/target/site/jacoco/index.html`
 
 ---
-
-## 📝 Resume Project Heading
-
-**LuxeThreads - Personality-Driven E-Store** | *React, Spring Boot, Java, JPA, MySQL, Docker*
--   Architected a full-stack e-commerce system using **Spring Boot** and **React**, implementing distinct authentication flows and persistent shopping cart logic with **MySQL**.
--   Optimized data integrity by implementing **partial update logic** in the **JPA** layer, reducing database overhead and preventing state corruption during concurrent cart operations.
--   Containerized the entire application stack using **Docker** and **Docker Compose**, streamlining local development and production deployment with a multi-stage build pipeline.
--   Designed a premium User Interface using **Vite** and **React Context API**, delivering a responsive, personality-driven shopping experience with real-time state management.
