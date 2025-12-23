@@ -1,4 +1,4 @@
-# � E-Store Express - Personality-Driven Apparel
+# � LuxeThreads-E-Store Express - Personality-Driven Apparel
 
 This is an e-store specializing in products that help its buyers express their personalities. The store offers t-shirts that, beyond their practical uses, serve as a canvas for users to express their tastes and ideas.
 
