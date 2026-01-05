@@ -20,7 +20,7 @@ public class ShoppingCartService {
     }
 
     public ShoppingCartItem[] getItemsInShoppingCart(int userID) throws IOException {
-        List<ShoppingCartItem> items = repository.findByUserID(userID);
+        List<ShoppingCartItem> items = repository.findByUserIDAndOrderIDIsNull(userID);
         return items.toArray(new ShoppingCartItem[0]);
     }
 

@@ -30,7 +30,8 @@ public class OrderService {
         if (order.getItems() != null) {
             for (com.estore.api.estoreapi.model.ShoppingCartItem item : order.getItems()) {
                 item.setShoppingCartID(0);
-                item.setUserID(0);
+                item.setUserID(order.getUserID());
+                item.setOrder(order);
             }
         }
         repository.save(order);

@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "shopping_cart_item")
@@ -31,6 +34,15 @@ public class ShoppingCartItem {
     @Column(name = "user_id")
     @JsonProperty("userID")
     private int userID;
+
+    @Column(name = "order_id", insertable = false, updatable = false)
+    @JsonProperty("orderID")
+    private Integer orderID;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Order order;
 
     @Column(name = "shopping_cart_quantity")
     @JsonProperty("shoppingCartQuantity")
@@ -112,5 +124,13 @@ public class ShoppingCartItem {
     public String toString() {
         return "ShoppingCartItem [ID=" + shoppingCartID + ", product=" + productID + ", qty=" + shoppingCartQuantity
                 + "]";
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

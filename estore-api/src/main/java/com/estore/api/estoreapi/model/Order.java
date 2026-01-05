@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
+
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,8 +26,7 @@ public class Order {
     @JsonProperty("userID")
     private int userID;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonProperty("items")
     private List<ShoppingCartItem> items;
 

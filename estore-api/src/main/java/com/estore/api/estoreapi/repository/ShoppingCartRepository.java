@@ -7,5 +7,7 @@ import com.estore.api.estoreapi.model.ShoppingCartItem;
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCartItem, Integer> {
     List<ShoppingCartItem> findByUserID(int userID);
 
+    List<ShoppingCartItem> findByUserIDAndOrderIDIsNull(int userID);
+
     void deleteByUserID(int userID);
 }
