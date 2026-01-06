@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public User getUserByName(String name) throws IOException {
-        return repository.findByName(name);
+        return repository.findByNameIgnoreCase(name);
     }
 
     public User createUser(User user) throws IOException {

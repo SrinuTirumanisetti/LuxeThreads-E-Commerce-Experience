@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   db:
     image: mysql:8.0
@@ -9,23 +11,26 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
-    build: ./estore-api
+    build:
+      context: ./estore-api
     restart: always
     environment:
-      - DB_URL=jdbc:mysql://db:3306/estore_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
-      - DB_USERNAME=root
-      - DB_PASSWORD=Srinu582004
-      - SPRING_SQL_INIT_MODE=always
-      - SPRING_SQL_INIT_CONTINUE_ON_ERROR=true
+      DB_URL: jdbc:mysql://host.docker.internal:3306/estore_db?useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: Srinu582004
     ports:
       - "8080:8080"
-    depends_on:
-      - db
 
   frontend:
-    build: ./estore-ui
+    build:
+      context: ./estore-ui
     restart: always
     ports:
       - "80:80"
