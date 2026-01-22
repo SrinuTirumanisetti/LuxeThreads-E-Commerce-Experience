@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.estore.api.estoreapi.model.Order;
+import com.estore.api.estoreapi.model.ShoppingCartItem;
 import com.estore.api.estoreapi.repository.OrderRepository;
+import com.estore.api.estoreapi.repository.ShoppingCartRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private OrderRepository repository;
+    private ShoppingCartRepository shoppingCartRepository;
 
-    public OrderService(OrderRepository repository) {
+    public OrderService(OrderRepository repository, ShoppingCartRepository shoppingCartRepository) {
         this.repository = repository;
+        this.shoppingCartRepository = shoppingCartRepository;
     }
 
     @Transactional(readOnly = true)
@@ -27,13 +31,16 @@ public class OrderService {
 
     @Transactional
     public void addOrder(Order order) throws IOException {
-        if (order.getItems() != null) {
-            for (com.estore.api.estoreapi.model.ShoppingCartItem item : order.getItems()) {
-                item.setShoppingCartID(0);
-                item.setUserID(order.getUserID());
+        // Fetch existing cart items to preserve their mapping and quantity reservation
+        List<ShoppingCartItem> cartItems = shoppingCartRepository.findByUserIDAndOrderIDIsNull(order.getUserID());
+
+        if (cartItems != null && !cartItems.isEmpty()) {
+            for (ShoppingCartItem item : cartItems) {
                 item.setOrder(order);
             }
+            order.setItems(cartItems);
         }
+
         repository.save(order);
     }
 }

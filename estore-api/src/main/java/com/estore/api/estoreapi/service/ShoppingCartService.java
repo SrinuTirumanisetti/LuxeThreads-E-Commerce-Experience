@@ -14,9 +14,11 @@ import com.estore.api.estoreapi.repository.ShoppingCartRepository;
 public class ShoppingCartService {
 
     private ShoppingCartRepository repository;
+    private ProductService productService;
 
-    public ShoppingCartService(ShoppingCartRepository repository) {
+    public ShoppingCartService(ShoppingCartRepository repository, ProductService productService) {
         this.repository = repository;
+        this.productService = productService;
     }
 
     public ShoppingCartItem[] getItemsInShoppingCart(int userID) throws IOException {
@@ -29,21 +31,46 @@ public class ShoppingCartService {
         return item.orElse(null);
     }
 
+    @Transactional
     public void addItemtoShoppingCart(ShoppingCartItem shoppingCartItem) throws IOException {
+        boolean reserved = productService.decrementStock(shoppingCartItem.getProductID(),
+                shoppingCartItem.getShoppingCartQuantity());
+        if (!reserved) {
+            throw new RuntimeException("Product is out of stock or insufficient quantity");
+        }
         repository.save(shoppingCartItem);
     }
 
+    @Transactional
     public void updateCart(ShoppingCartItem shoppingCartItem) throws IOException {
         Optional<ShoppingCartItem> existingItemOpt = repository.findById(shoppingCartItem.getShoppingCartID());
         if (existingItemOpt.isPresent()) {
             ShoppingCartItem existingItem = existingItemOpt.get();
+            int delta = shoppingCartItem.getShoppingCartQuantity() - existingItem.getShoppingCartQuantity();
+
+            if (delta > 0) {
+                boolean reserved = productService.decrementStock(existingItem.getProductID(), delta);
+                if (!reserved) {
+                    throw new RuntimeException("Insufficient stock to increase quantity");
+                }
+            } else if (delta < 0) {
+                productService.incrementStock(existingItem.getProductID(), Math.abs(delta));
+            }
+
             existingItem.setShoppingCartQuantity(shoppingCartItem.getShoppingCartQuantity());
             repository.save(existingItem);
         }
     }
 
+    @Transactional
     public boolean removeItemFromShoppingCart(int id) throws IOException {
-        if (repository.existsById(id)) {
+        Optional<ShoppingCartItem> itemOpt = repository.findById(id);
+        if (itemOpt.isPresent()) {
+            ShoppingCartItem item = itemOpt.get();
+
+            // Release product quantity
+            productService.incrementStock(item.getProductID(), item.getShoppingCartQuantity());
+
             repository.deleteById(id);
             return true;
         }
@@ -52,6 +79,11 @@ public class ShoppingCartService {
 
     @Transactional
     public void clearShoppingCart(int userId) throws IOException {
-        repository.deleteByUserID(userId);
+        List<ShoppingCartItem> items = repository.findByUserIDAndOrderIDIsNull(userId);
+        for (ShoppingCartItem item : items) {
+            // Release product quantity
+            productService.incrementStock(item.getProductID(), item.getShoppingCartQuantity());
+        }
+        repository.deleteByUserIDAndOrderIDIsNull(userId);
     }
 }

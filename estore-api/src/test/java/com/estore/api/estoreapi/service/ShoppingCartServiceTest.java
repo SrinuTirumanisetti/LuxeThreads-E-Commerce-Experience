@@ -20,12 +20,14 @@ import com.estore.api.estoreapi.repository.ShoppingCartRepository;
 public class ShoppingCartServiceTest {
 
     private ShoppingCartRepository mockShoppingCartRepository;
+    private ProductService mockProductService;
     private ShoppingCartService shoppingCartService;
 
     @BeforeEach
     public void setup() {
         mockShoppingCartRepository = mock(ShoppingCartRepository.class);
-        shoppingCartService = new ShoppingCartService(mockShoppingCartRepository);
+        mockProductService = mock(ProductService.class);
+        shoppingCartService = new ShoppingCartService(mockShoppingCartRepository, mockProductService);
     }
 
     @Test

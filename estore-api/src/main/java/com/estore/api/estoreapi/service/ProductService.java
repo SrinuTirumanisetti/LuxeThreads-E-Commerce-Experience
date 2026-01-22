@@ -51,4 +51,12 @@ public class ProductService {
         }
         return false;
     }
+
+    public boolean decrementStock(int id, int amount) {
+        return repository.decrementQuantity(id, amount) > 0;
+    }
+
+    public void incrementStock(int id, int amount) {
+        repository.incrementQuantity(id, amount);
+    }
 }

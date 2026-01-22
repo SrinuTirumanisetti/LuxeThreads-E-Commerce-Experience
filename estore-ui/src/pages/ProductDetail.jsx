@@ -166,38 +166,44 @@ const ProductDetail = () => {
                     <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                         <button
                             onClick={handleAddToCart}
+                            disabled={product.quantity <= 0}
                             style={{
                                 flex: 1,
                                 padding: '1.2rem',
                                 borderRadius: 'var(--br)',
                                 background: 'white',
-                                border: '2px solid var(--primary)',
+                                border: product.quantity > 0 ? '2px solid var(--primary)' : '2px solid #ccc',
+                                color: product.quantity > 0 ? 'inherit' : '#999',
                                 fontWeight: 'bold',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 gap: '0.8rem',
-                                transition: 'var(--transition)'
+                                transition: 'var(--transition)',
+                                cursor: product.quantity > 0 ? 'pointer' : 'not-allowed'
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 219, 62, 0.1)'}
-                            onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
+                            onMouseEnter={(e) => product.quantity > 0 && (e.currentTarget.style.background = 'rgba(255, 219, 62, 0.1)')}
+                            onMouseLeave={(e) => product.quantity > 0 && (e.currentTarget.style.background = 'white')}
                         >
                             <ShoppingCart size={20} />
-                            Add to Cart
+                            {product.quantity > 0 ? 'Add to Cart' : 'Sold Out'}
                         </button>
                         <button
                             onClick={handlePurchase}
+                            disabled={product.quantity <= 0}
                             style={{
                                 flex: 1,
                                 padding: '1.2rem',
                                 borderRadius: 'var(--br)',
-                                background: 'var(--primary)',
+                                background: product.quantity > 0 ? 'var(--primary)' : '#eee',
+                                color: product.quantity > 0 ? 'inherit' : '#999',
                                 fontWeight: 'bold',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 gap: '0.8rem',
-                                boxShadow: '0 4px 15px rgba(255, 219, 62, 0.4)'
+                                boxShadow: product.quantity > 0 ? '0 4px 15px rgba(255, 219, 62, 0.4)' : 'none',
+                                cursor: product.quantity > 0 ? 'pointer' : 'not-allowed'
                             }}
                         >
                             <CreditCard size={20} />
@@ -206,9 +212,9 @@ const ProductDetail = () => {
                     </div>
 
                     <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#26a383' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: product.quantity > 5 ? '#26a383' : '#df183f' }}>
                             <CheckCircle size={16} />
-                            <span>In Stock</span>
+                            <span>{product.quantity > 0 ? `${product.quantity} units available` : 'Out of Stock'}</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                             <Package size={16} />

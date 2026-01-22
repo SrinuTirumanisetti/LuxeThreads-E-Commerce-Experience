@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ProductService } from '../api';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Search } from 'lucide-react';
+import { ShoppingBag, Search, Package } from 'lucide-react';
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -109,9 +109,21 @@ const Home = () => {
                                     <span style={{ fontSize: '1.4rem', fontWeight: '900', color: 'var(--text-main)' }}>
                                         ${product.price.toFixed(2)}
                                     </span>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#26a383', fontWeight: 'bold' }}>
-                                        <ShoppingBag size={16} />
-                                        <span>View Detail</span>
+                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.2rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: product.quantity > 5 ? '#26a383' : '#df183f', fontWeight: 'bold', fontSize: '0.85rem' }}>
+                                            {product.quantity > 0 ? (
+                                                <>
+                                                    <Package size={14} />
+                                                    <span>{product.quantity} left</span>
+                                                </>
+                                            ) : (
+                                                <span style={{ color: '#666' }}>Out of Stock</span>
+                                            )}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: 'var(--primary)', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                                            <ShoppingBag size={14} />
+                                            <span>View Detail</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

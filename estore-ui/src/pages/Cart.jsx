@@ -27,10 +27,15 @@ const Cart = () => {
         if (cart.length > 0) fetchDetails();
     }, [cart]);
 
-    const handleUpdateQty = async (id, current, delta) => {
+    const handleUpdateQty = async (id, itemProductID, current, delta) => {
         const next = current + delta;
         if (next < 1) return;
         try {
+            const product = productDetails[itemProductID];
+            if (delta > 0 && product && product.quantity < delta) {
+                alert(`Sorry, only ${product.quantity} more units available.`);
+                return;
+            }
             await CartService.updateItem({ shoppingCartID: id, shoppingCartQuantity: next });
             refreshCart();
         } catch (e) {
@@ -95,16 +100,21 @@ const Cart = () => {
                                     <span>Color: <strong style={{ color: 'var(--text-main)' }}>{item.color}</strong></span>
                                     <span>Size: <strong style={{ color: 'var(--text-main)' }}>{item.size}</strong></span>
                                 </div>
-                                <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: '#f0f0f0', padding: '0.4rem 0.8rem', borderRadius: '8px' }}>
-                                        <button onClick={() => handleUpdateQty(item.shoppingCartID, item.shoppingCartQuantity, -1)} style={{ background: 'none' }}><Minus size={16} /></button>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: '#f0f0f0', padding: '0.4rem 0.8rem', borderRadius: '8px', width: 'fit-content' }}>
+                                        <button onClick={() => handleUpdateQty(item.shoppingCartID, item.productID, item.shoppingCartQuantity, -1)} style={{ background: 'none' }}><Minus size={16} /></button>
                                         <span style={{ fontWeight: 'bold' }}>{item.shoppingCartQuantity}</span>
-                                        <button onClick={() => handleUpdateQty(item.shoppingCartID, item.shoppingCartQuantity, 1)} style={{ background: 'none' }}><Plus size={16} /></button>
+                                        <button onClick={() => handleUpdateQty(item.shoppingCartID, item.productID, item.shoppingCartQuantity, 1)} style={{ background: 'none' }}><Plus size={16} /></button>
                                     </div>
-                                    <button onClick={() => handleDelete(item.shoppingCartID)} style={{ background: 'none', color: '#e2465b', display: 'flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.85rem' }}>
-                                        <Trash2 size={16} /> Remove
-                                    </button>
+                                    {productDetails[item.productID]?.quantity < 5 && (
+                                        <span style={{ fontSize: '0.75rem', color: '#df183f', fontWeight: 'bold' }}>
+                                            Only {productDetails[item.productID]?.quantity} more available
+                                        </span>
+                                    )}
                                 </div>
+                                <button onClick={() => handleDelete(item.shoppingCartID)} style={{ background: 'none', color: '#e2465b', display: 'flex', alignItems: 'center', gap: '0.2rem', fontSize: '0.85rem', width: 'fit-content', marginTop: '0.5rem' }}>
+                                    <Trash2 size={16} /> Remove
+                                </button>
                             </div>
 
                             <div style={{ textAlign: 'right' }}>

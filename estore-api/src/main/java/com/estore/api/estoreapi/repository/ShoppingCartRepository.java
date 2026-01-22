@@ -10,4 +10,6 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartItem, 
     List<ShoppingCartItem> findByUserIDAndOrderIDIsNull(int userID);
 
     void deleteByUserID(int userID);
+
+    void deleteByUserIDAndOrderIDIsNull(int userID);
 }
